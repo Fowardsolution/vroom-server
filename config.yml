@@ -18,6 +18,5 @@ cliArgs:
 routingServers:
   osrm:
     car:
-      host: 'router.project-osrm.org'
-      port: '443'
-      use_https: true
+      host: '127.0.0.1'
+      port: '5000'
