@@ -14,15 +14,15 @@ RUN osrm-extract -p /opt/car.lua /data/map.osm.pbf && \
 
 FROM vroomvrp/vroom-docker:v1.13.0
 
-# Install OSRM and supervisor
 USER root
-RUN apt-get update && apt-get install -y supervisor wget && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y supervisor && rm -rf /var/lib/apt/lists/*
 
-# Copy processed OSRM data
+# Copy processed OSRM data and binary
 COPY --from=osrm-builder /data /osrm-data
 COPY --from=osrm-builder /usr/local/bin/osrm-routed /usr/local/bin/osrm-routed
-COPY --from=osrm-builder /usr/local/lib/libosrm.so /usr/local/lib/
+COPY --from=osrm-builder /usr/local/lib/ /usr/local/lib/
 COPY --from=osrm-builder /usr/lib/x86_64-linux-gnu/libTBB* /usr/lib/x86_64-linux-gnu/
+COPY --from=osrm-builder /usr/lib/x86_64-linux-gnu/libboost* /usr/lib/x86_64-linux-gnu/
 RUN ldconfig
 
 # Copy config
