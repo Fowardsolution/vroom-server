@@ -1,0 +1,15 @@
+cliArgs:
+  geometry: true
+  threads: 4
+  explore: 5
+  limit: '5mb'
+  port: 3000
+  router: osrm
+  timeout: 300000
+
+routingServers:
+  osrm:
+    car:
+      host: "router.project-osrm.org"
+      port: 443
+      use_https: true
