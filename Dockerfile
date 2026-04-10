@@ -15,9 +15,8 @@ RUN osrm-extract -p /opt/car.lua /data/map.osm.pbf && \
 FROM vroomvrp/vroom-docker:v1.13.0
 
 USER root
-RUN apt-get update && apt-get install -y supervisor && rm -rf /var/lib/apt/lists/*
 
-# Copy processed OSRM data and binary
+# Copy processed OSRM data and binary with dependencies
 COPY --from=osrm-builder /data /osrm-data
 COPY --from=osrm-builder /usr/local/bin/osrm-routed /usr/local/bin/osrm-routed
 COPY --from=osrm-builder /usr/local/lib/ /usr/local/lib/
@@ -27,8 +26,9 @@ RUN ldconfig
 
 # Copy config
 COPY config.yml /conf/config.yml
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
 
 EXPOSE 3000
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD ["/start.sh"]
