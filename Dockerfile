@@ -3,7 +3,7 @@ FROM ghcr.io/project-osrm/osrm-backend:v5.27.1 AS osrm-builder
 RUN apt-get update && apt-get install -y wget
 
 # Download Dominican Republic + Haiti map
-RUN wget -q https://download.geofabrik.de/central-america/haiti-and-domrep-latest.osm.pbf -O /data/map.osm.pbf
+RUN mkdir -p /data && wget -q https://download.geofabrik.de/central-america/haiti-and-domrep-latest.osm.pbf -O /data/map.osm.pbf
 
 # Process map for OSRM
 RUN osrm-extract -p /opt/car.lua /data/map.osm.pbf && \
